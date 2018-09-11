@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>JS</title>
+</head>
+<body>
+  
+  <script>
+    function Person(name, bills) {
+      this.name = name;
+      this.bills = bills;
+      this.total = [];
+      this.sum = 0;
+      this.avg = 0;
+    }
+
+    Person.prototype.calcTips = function() {
+      this.bills.forEach((b, i) => {
+        if(b < 50) {
+          this.total[i] = (b * 1.2).toFixed(2);
+        }
+        else if (b >= 50 && b <= 200) {
+          this.total[i] = (b * 1.15).toFixed(2);
+        }
+        else {
+          this.total[i] = (b * 1.1).toFixed(2);
+        }
+      });
+
+      this.sum = this.bills.reduce((a, b) => a + b);
+      this.avg = this.sum / this.bills.length;
+    }
+
+    var person1 = new Person('John', [124, 202, 90, 101]);
+    var person2 = new Person('Mark', [58, 89, 99, 42]);
+
+    person1.calcTips();
+    person2.calcTips();
+
+    console.log(person1.total, person1.sum, person1.avg)
+    console.log(person2.total, person2.sum, person2.avg)
+    
+  </script>
+</body>
+</html>
