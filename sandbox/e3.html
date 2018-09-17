@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Advanced JS</title>
+</head>
+
+<body>
+  <h1>Quizz</h1>
+  <p id="q"></p>
+  <p id="a"></p>
+
+  <script>
+
+    (function() {
+      
+      function Question(question, answers, correctAnswer) {
+        this.question = question;
+        this.answers = answers;
+        this.correctAnswer = correctAnswer;
+      }
+
+      Question.prototype.displayQuestion = function() {
+        const q = document.getElementById('q');
+        const a = document.getElementById('a');
+
+        q.innerHTML = this.question + "<br>";
+
+        for (let i = 0; i < this.answers.length; i++) {
+          q.innerHTML += i + ': ' + this.answers[i] + "<br>";
+        }
+      }
+
+      Question.prototype.checkAnswer = function(ans) {
+        if(ans === this.correctAnswer) {
+          a.innerHTML = 'Correct';
+        }
+        else {
+          a.innerHTML = 'Incorrect';
+        }        
+      }
+
+      const q1 = new Question('Is JavaScript the coolest programming language in the world?', ['Yes', 'No'], 0);
+      const q2 = new Question('What is the name of this course\'s teacher?', ['John', 'Micheal', 'Jonas'], 2);
+      const q3 = new Question('What does best describe coding?', ['Boring', 'Hard', 'Fun', 'Tediuos'], 2);
+
+      const questions = [q1, q2, q3];
+
+      function nextQuestion() {
+        const n = Math.floor(Math.random() * questions.length);
+
+        questions[n].displayQuestion();
+
+        const answer = prompt('Please select the correct answer ou type exit to finish');
+
+        if(answer !== 'exit') {
+          questions[n].checkAnswer(parseInt(answer));
+          nextQuestion();
+        }          
+      }
+
+      nextQuestion();
+      
+    })();
+    
+
+  </script>
+</body>
+
+</html>
