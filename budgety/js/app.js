@@ -146,7 +146,16 @@ const UIController = (function() {
     expensesLabel: '.budget__expenses--value',
     percentageLabel: '.budget__expenses--percentage',
     container: '.container',
-    expensesPercLabel: '.item__percentage'
+    expensesPercLabel: '.item__percentage',
+    dateLabel: '.budget__title--month'
+  };
+
+  const formatNumber = function(num, type) {
+      
+    let sign = type === 'expense' ? '-' : '+';
+    num = num.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    
+    return sign + ' ' + num;
   }
   return {
     getInput: function() {
@@ -168,7 +177,7 @@ const UIController = (function() {
           `<div class="item clearfix" id="income-${obj.id}">
             <div class="item__description">${obj.description}</div>
             <div class="right clearfix">
-              <div class="item__value">+ ${obj.value}</div>
+              <div class="item__value">${formatNumber(obj.value, type)}</div>
               <div class="item__delete">
                 <button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button>
               </div>
@@ -181,8 +190,8 @@ const UIController = (function() {
           `<div class="item clearfix" id="expense-${obj.id}">
             <div class="item__description">${obj.description}</div>
             <div class="right clearfix">
-              <div class="item__value">- ${obj.value}</div>
-              <div class="item__percentage">21%</div>
+              <div class="item__value">${formatNumber(obj.value, type)}</div>
+              <div class="item__percentage">%</div>
               <div class="item__delete">
                 <button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button>
               </div>
@@ -211,9 +220,11 @@ const UIController = (function() {
     },
 
     displayBudget: function(obj) {      
-      document.querySelector(UIStrings.budgetLabel).textContent = obj.budget.toFixed(2);
-      document.querySelector(UIStrings.incomeLabel).textContent = '+ ' + obj.totalIncome.toFixed(2);
-      document.querySelector(UIStrings.expensesLabel).textContent = '- ' + obj.totalExpense.toFixed(2);
+      let type = obj.budget >= 0 ? 'income' : 'expense';
+
+      document.querySelector(UIStrings.budgetLabel).textContent = formatNumber(obj.budget, type);
+      document.querySelector(UIStrings.incomeLabel).textContent = formatNumber(obj.totalIncome, 'income');
+      document.querySelector(UIStrings.expensesLabel).textContent = formatNumber(obj.totalExpense, 'expense');
 
       if(obj.percentage > 0) {
         document.querySelector(UIStrings.percentageLabel).textContent = obj.percentage + '%';
@@ -233,6 +244,24 @@ const UIController = (function() {
         else
           field.textContent = '---';
       });
+    },
+
+    displayDate: function() {
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = now.toLocaleString("en-US", {month: "long"});
+
+      document.querySelector(UIStrings.dateLabel).textContent = month + ' ' + year;
+    },
+
+    changeType: function() {
+      const fields = document.querySelectorAll(UIStrings.inputType + ', ' + UIStrings.inputDescription + ', ' + UIStrings.inputValue);
+
+      fields.forEach(field => {
+        field.classList.toggle('red-focus');
+      });
+
+      document.querySelector(UIStrings.buttonAdd).classList.toggle('red');
     },
 
     getUIStrings: function() {
@@ -256,6 +285,7 @@ const controller = (function(budgetCtrl, UICtrl) {
     });
 
     document.querySelector(UI.container).addEventListener('click', ctrlDeleteItem);
+    document.querySelector(UI.inputType).addEventListener('change', UICtrl.changeType);
   }
 
   const updateBugdet = function() {
@@ -345,6 +375,7 @@ const controller = (function(budgetCtrl, UICtrl) {
         totalExpense: 0,
         percentage: -1
       });
+      UICtrl.displayDate();
       setupEventListeners();
     }
   }
