@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Javascript</title>
+  <style>
+    .box {
+      width: 200px;
+      padding: 60px;
+      text-align: center;
+      font-size: 30px;
+      margin-top: 50px;
+    }
+    .green {
+      background-color: green;
+    }
+    .blue {
+      background-color: dodgerblue;
+    }
+    .orange {
+      background-color: orangered;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="box green">I'm green!</div>
+  <div class="box blue">I'm blue!</div>
+  <div class="box orange">I'm orange!</div>
+
+  <script>
+    // ES5
+    var box5 = {
+      color: 'green',
+      position: 1,
+      clickMe: function() {
+        var self = this;
+
+        document.querySelector('.green').addEventListener('click', function() {
+          var str = 'This is box number ' + self.position + ' and its color is ' + self.color;
+          console.log(this);
+          console.log(self);
+          alert(str);
+        })
+      }
+    }
+
+    box5.clickMe();
+
+    // ES5
+    const box6 = {
+      color: 'blue',
+      position: 2,
+      clickMe: function() {
+
+        document.querySelector('.blue').addEventListener('click', () => {
+          const str = 'This is box number ' + self.position + ' and its color is ' + self.color;
+          console.log(this);
+          alert(str);
+        })
+      }
+    }
+
+    box6.clickMe();
+
+     const box7 = {
+      color: 'orange',
+      position: 2,
+      clickMe: () => {
+
+        document.querySelector('.orange').addEventListener('click', () => {
+          const str = 'This is box number ' + self.position + ' and its color is ' + self.color;
+          console.log(this);
+          alert(str);
+        })
+      }
+    }
+
+    box7.clickMe();
+    
+  </script>
+</body>
+</html>
