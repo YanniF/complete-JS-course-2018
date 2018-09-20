@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Javascript</title>
+  <style>
+    .box {
+      width: 200px;
+      padding: 60px;
+      text-align: center;
+      font-size: 30px;
+      margin-top: 50px;
+    }
+
+    .green {
+      background-color: green;
+    }
+
+    .blue {
+      background-color: dodgerblue;
+    }
+
+    .orange {
+      background-color: orangered;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="box green">I'm green!</div>
+  <div class="box blue">I'm blue!</div>
+  <div class="box orange">I'm orange!</div>
+
+  <script>
+    // Spread operator
+    const familySmith = ['John', 'Jane', 'Mark'];
+    const familyMiller = ['Mary', 'Bob', 'Ann'];
+    const bigFamily = [...familySmith, 'Lily', ...familyMiller];
+
+    console.log(bigFamily);
+
+    function isFullAge6(limit, ...years) {
+      years.forEach(year => console.log((2018 - year) >= limit));
+    }
+
+    isFullAge6(18, 1990, 1999, 1965, 2016, 1987);
+  </script>
+</body>
+
+</html>

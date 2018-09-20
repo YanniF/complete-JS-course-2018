@@ -80,6 +80,29 @@
     }
 
     box7.clickMe();
+
+    // desctructuring
+    const[name, age] = ['Yanni', 21];
+    console.log(name, age);
+
+    const obj = {
+      firstName: 'Yanni',
+      lastName: 'Fraga'
+    };
+
+    const {firstName, lastName} = obj; // it has to be the same name
+    console.log(firstName, lastName)
+
+    const {firstName: f, lastName: l} = obj;
+    console.log(f, l);
+
+    function calcAgeRetirement(year) {
+      const age = new Date().getFullYear() - year;
+      return [age, 65 - age]; 
+    }
+
+    const [age2, retirement] = calcAgeRetirement(1989);
+    console.log(age2, retirement); 
     
   </script>
 </body>

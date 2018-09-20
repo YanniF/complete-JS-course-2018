@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Javascript</title>
+  <style>
+    .box {
+      width: 200px;
+      padding: 60px;
+      text-align: center;
+      font-size: 30px;
+      margin-top: 50px;
+    }
+    .green {
+      background-color: green;
+    }
+    .blue {
+      background-color: dodgerblue;
+    }
+    .orange {
+      background-color: orangered;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="box green">I'm green!</div>
+  <div class="box blue">I'm blue!</div>
+  <div class="box orange">I'm orange!</div>
+
+  <script>
+    const boxes = document.querySelectorAll('.box');
+
+    // Array.from(boxes).forEach(box => box.style.backgroundColor = 'crimson');
+    boxes.forEach(box => box.style.backgroundColor = 'crimson');
+
+    for(const box of boxes) {
+      // if(box.className === 'box blue')
+      if(box.className.includes('blue'))
+        continue;
+
+      box.textContent = 'I\'m cray cray';
+    }
+
+    const ages = [13, 17, 8, 22, 14, 15];
+    console.log(ages);
+    console.log(ages.findIndex(age => age >= 18));
+    console.log(ages.find(age => age >= 18));
+  </script>
+</body>
+</html>
