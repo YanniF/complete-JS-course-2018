@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Javascript</title>
+</head>
+<body>
+  <h1>Javascript</h1>
+
+  <script>
+    // promises
+    const getIDs = new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve([123, 456, 789, 987]);
+      }, 1500);
+    });
+
+    const getRecipe = recID => {
+      return new Promise((resolve, reject) => {
+        setTimeout(id => {
+          const recipe = {title: 'Fresh tomato pasta', publisher: 'Luigi'};
+          resolve(`${id}: ${recipe.title}`);
+        }, 1500, recID);        
+      });
+    };
+
+    const getRelated = publisher => {
+      return new Promise((resolve, reject) => {
+        setTimeout(pub => {
+          const recipe = {title: 'Pizza', publisher: 'Luigi'};
+          resolve(pub + ': ' + recipe.title);
+        }, 1500, publisher);
+      });
+    };
+
+    async function getRecipes() {
+      const ids = await getIDs;
+      console.log(ids);
+
+      const recipe = await getRecipe(ids[2]);
+      console.log(recipe);
+
+      const related = await getRelated('Luigi');
+      console.log(related);
+
+      return recipe;
+    }
+
+    const rec = getRecipes();
+    rec.then((result) => console.log('Recipe: ' + result));
+  </script>
+</body>
+</html>
