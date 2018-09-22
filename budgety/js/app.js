@@ -41,6 +41,34 @@ const controller = (function(budgetCtrl, UICtrl) {
     UICtrl.displayPercentages(percentages);
   }
 
+  const storageBudget = function() {
+    const budget = budgetCtrl.getDataBudget();
+    localStorage.setItem('budget', JSON.stringify(budget));
+  }
+
+  const getSavedBudget = function() {
+    let savedBudget, expenses, incomes;
+
+    if(localStorage.getItem('budget') === null) {
+      savedBudget = [];
+    }
+    else {
+      savedBudget = JSON.parse(localStorage.getItem('budget'));
+      expenses = savedBudget.allItems.expense;
+      incomes = savedBudget.allItems.income;
+
+      incomes.forEach(income => {
+        UICtrl.addListItem(income, 'income');      
+      });
+
+      expenses.forEach(expense => {
+        UICtrl.addListItem(expense, 'expense');
+      });
+
+      budgetCtrl.setDataBudget(savedBudget);
+    }
+  }
+
   const crtlAddItem = function() {
     let input, newItem;
 
@@ -60,6 +88,7 @@ const controller = (function(budgetCtrl, UICtrl) {
       // calculate and update budget and percentages
       updateBugdet();
       updatePercentages();
+      storageBudget();
     }    
   }
 
@@ -86,8 +115,8 @@ const controller = (function(budgetCtrl, UICtrl) {
       // updtate and show new budget and percetages
       updateBugdet();
       updatePercentages();
-    }
-     
+      storageBudget();
+    }     
   }
 
   function findParent(el, className) {
@@ -107,6 +136,10 @@ const controller = (function(budgetCtrl, UICtrl) {
       });
       UICtrl.displayDate();
       setupEventListeners();
+
+      getSavedBudget();
+      updatePercentages();
+      updateBugdet();
     }
   }
   

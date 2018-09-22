@@ -26,7 +26,7 @@ const budgetController = (function() {
     this.value = value;
   }
 
-  const data = {
+  let data = {
     allItems: {
       expense: [],
       income: []
@@ -104,9 +104,11 @@ const budgetController = (function() {
     },
 
     calculatePercentages: function() {
+      
       data.allItems.expense.forEach(exp => {
         exp.calcPercentage(data.totals.income);
       });
+      
     },
 
     getPercentages: function() {
@@ -124,6 +126,25 @@ const budgetController = (function() {
         totalExpense: data.totals.expense,
         percentage: data.percentage
       }
+    },
+
+    getDataBudget: function() {
+      return data;
+    },
+
+    setDataBudget: function(budget) {
+      // is there a way to keep the type without having to set it manually?
+      budget.allItems.income.forEach((b, i) => {
+        data.allItems.income[i] = new Income(b.id, b.description, b.value);
+      });
+
+      budget.allItems.expense.forEach((b, i) => {
+        data.allItems.expense[i] = new Expense(b.id, b.description, b.value);
+      })
+
+      data.totals.expense = budget.totals.expense;
+      data.totals.income = budget.totals.income;
+      data.budget = budget.budget;
     },
 
     testing: function() {
