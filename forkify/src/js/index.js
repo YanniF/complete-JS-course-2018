@@ -1,7 +1,33 @@
-import string from './models/Search'
+import Search from './models/Search';
 
-// import { add, multiply } from './views/searchView'
+/*
+  Global state of the app
+  - search object
+  - current recipe object
+  - shopping list object
+  - liked recipes 
+*/
+const state = {};
 
-import * as searchView from './views/searchView'
+const controlSearch = async () => {
+  // get query from view
+  const query = 'pizza';
 
-console.log(searchView.add(searchView.multiply(3,5), 3))
+  if(query) {
+    // new search object and add to state
+    state.search = new Search(query);
+
+    // prepare UI for results
+
+    // search for recipes
+    await state.search.getResults();
+
+    // render results on UI
+    console.log(state.search.result)
+  }
+};
+
+document.querySelector('.search').addEventListener('submit', e => {
+  e.preventDefault();
+  controlSearch();
+});
