@@ -1,4 +1,5 @@
 import Search from './models/Search';
+import Recipe from './models/Recipe';
 import * as searchView from './views/searchView';
 import { elements, renderLoader, clearLoader } from "./views/base";
 
@@ -11,6 +12,7 @@ import { elements, renderLoader, clearLoader } from "./views/base";
 */
 const state = {};
 
+// SERACH CONTROLLER
 const controlSearch = async () => {
   // get query from view
   const query = searchView.getInput();
@@ -24,12 +26,18 @@ const controlSearch = async () => {
     searchView.clearResults();
     renderLoader(elements.searchResults);
 
-    // search for recipes
-    await state.search.getResults();
-
-    // render results on UI
-    clearLoader();
-    searchView.renderResults(state.search.result);
+    try {
+      // search for recipes
+      await state.search.getResults();
+  
+      // render results on UI
+      clearLoader();
+      searchView.renderResults(state.search.result);
+    }
+    catch(error) {
+      alert('Something went wrong with the search');
+      clearLoader();
+    }
   }
 };
 
@@ -41,7 +49,7 @@ elements.searchForm.addEventListener('submit', e => {
 elements.searchResultPages.addEventListener('click', e => {
   let btn;
 
-  btn = e.target.classList.contains('.btn-inline') ? btn = e.target : e.target.closest('.btn-inline');
+  btn = e.target.classList.contains('.btn-inline') ? e.target : e.target.closest('.btn-inline');
   
   if(btn) {
     const goToPage = parseInt(btn.dataset.goto, 10);
@@ -50,13 +58,34 @@ elements.searchResultPages.addEventListener('click', e => {
   }
 });
 
+// RECIPE CONTROLLER
+const controlRecipe = async () => {
+  // get id from the url
+  const id = window.location.hash.replace('#', '');
 
-// Hi!
+  if(id) {
+    // prepare UI for changes
 
-// So that's how I did it:
 
-//  btn = e.target.classList.contains('.btn-inline') ? e.target : e.target.closest('.btn-inline'); 
+    // create new recipe object
+    state.recipe = new Recipe(id);
 
-// If it's Firefox, then e.target will have the class, otherwise use e.target.closest
+    try {
+      // get recipe data
+      await state.recipe.getRecipe();
+      // calculate servings and time
+      state.recipe.calcTime();
+      state.recipe.calcServings();
 
-// :)
+      // render recipe
+    }
+    catch(e) {
+      alert('Error processing recipe!');
+    }    
+  }
+};
+
+// window.addEventListener('hashchange', controlRecipe);
+// window.addEventListener('load', controlRecipe);
+
+['hashchange', 'load'].forEach(event => window.addEventListener(event, controlRecipe));
