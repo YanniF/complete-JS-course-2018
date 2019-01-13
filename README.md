@@ -5,3 +5,4 @@
 - Projects
   - Pig Dice Game
   - Budgety
+  - Forkify
